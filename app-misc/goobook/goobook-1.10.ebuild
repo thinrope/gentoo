@@ -1,39 +1,32 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI="7"
 PYTHON_COMPAT=( python2_7 )
 
-inherit distutils-r1 readme.gentoo
+inherit distutils-r1 readme.gentoo-r1
 
-DESCRIPTION="Google Contacts wrapper for mutt"
+DESCRIPTION="Access your Google contacts from the command line"
 HOMEPAGE="https://gitlab.com/goobook/goobook"
-SRC_URI="mirror://pypi/g/${PN}/${P}.tar.gz"
+SRC_URI="https://gitlab.com/${PN}/${PN}/-/archive/${PV}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="${PYTHON_DEPS}
-	>=dev-python/gdata-2.0.7[${PYTHON_USEDEP}]
+	>=dev-python/gdata-2.0.18[${PYTHON_USEDEP}]
 	>=dev-python/hcs-utils-1.3[${PYTHON_USEDEP}]
 	>=dev-python/keyring-0.2[${PYTHON_USEDEP}]
 	>=dev-python/simplejson-2.1.0[${PYTHON_USEDEP}]
-	>=dev-python/httplib2-0.9.1[${PYTHON_USEDEP}]
-	>=dev-python/oauth2client-1.4.11[${PYTHON_USEDEP}]"
+	>=dev-python/httplib2-0.9[${PYTHON_USEDEP}]
+	>=dev-python/oauth2client-1.2[${PYTHON_USEDEP}]"
 
 DEPEND="${PYTHON_DEPS}
 	dev-python/setuptools[${PYTHON_USEDEP}]"
 
-src_install() {
-	distutils-r1_src_install
-	readme.gentoo_create_doc
-}
-
-FORCE_PRINT_ELOG=1 # remove in the next bump
 DISABLE_AUTOFORMATTING=1
 DOC_CONTENTS="
 To setup initial authentication, execute:
@@ -46,3 +39,12 @@ to query address book.
 
 You may find more information and advanced configuration tips at
 https://pypi.org/project/${PN}/${PV} in \"Configure/Mutt\" section"
+
+src_install() {
+	distutils-r1_src_install
+	readme.gentoo_create_doc
+}
+
+pkg_postinst() {
+	readme.gentoo_print_elog
+}
